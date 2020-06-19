@@ -8,7 +8,7 @@ def main():
     output_sampled_files = samplefiles(args.file_folder,
                                        args.file_ext,
                                        args.how_many,
-                                       args.save)
+                                       args.saveList)
     return output_sampled_files
 
 
