@@ -1,26 +1,33 @@
+#! /usr/local/bin/python
 import glob
 import os
 import random
+import shutil
+import argparse
 
 
-def samplefiles(file_folder, file_ext, how_many, save=True):
-    """Function to randomly sample file names with a specified extension from a specified folder.
-    Random sampling is without replacement.
+def get_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--file_folder', default=None, required=True, type=str,
+                        help='String specifying the target folder.')
+    parser.add_argument('--file_ext', default=None, required=True, type=str,
+                        help="""String specifying the target file extension.\n
+                        String should contain only the file extension, 
+                        without the '.' (correct: 'jpg'; incorrect: '.jpg').""")
+    parser.add_argument('--how_many', default=None, required=True, type=int,
+                        help="""Integer specifying the number of file names to be sampled.\n
+                        Must be lower or equal to total number of files in target directory.""")
+    parser.add_argument('--saveList', default=True, required=False, type=bool,
+                        help="""Takes a boolean value as input.\n
+                        If TRUE, saves a .txt file containing a list of the sampled file names. Also returns list object.\n
+                        If FALSE, only returns the output list object with sampled file names is returned.""")
+    return parser
 
-    Function args:
 
-    file_folder:    string specifying the target folder (located in same directory as the .py script)
-
-    file_ext:   string specifying the target file extension.
-                String should contain only the file extension, without the '.' (correct: 'jpg'; incorrect: '.jpg').
-
-    how_many:   integer specifying the number of file names to be sampled.
-                Must be lower or equal to total number of files in target directory.
-
-    save:   takes a boolean value as input.
-            If TRUE, saves a .txt file containing a list of the sampled file names. Also returns list object.
-            If FALSE, only returns the output list object with sampled file names is returned.
-    """
+def samplefiles(file_folder, file_ext, how_many, saveList=True):
+    """Function to randomly sample file with a specified extension from a specified folder
+     and copy the sampled files to an output folder. Random sampling is without replacement.
+     A list with the file names of the sampled files is saved in a .txt file by default"""
     try:
 
         if os.path.isdir(os.path.join(os.getcwd(), file_folder)) == False:
@@ -52,15 +59,33 @@ def samplefiles(file_folder, file_ext, how_many, save=True):
         # Randomly sample entries from file list without replacement
         sampled_files = random.sample(filelist, int(how_many))
 
-        if save == True:
+        # Move randomly sampled files to output folder
+
+        # Create sub-directory to store output files
+        output_folder_name = 'sampled files'
+        outputpath = os.path.join(os.getcwd(), output_folder_name)
+
+        if not os.path.isdir(outputpath):
+            os.makedirs(outputpath)
+
+
+        for f in sampled_files:
+            shutil.copy(os.path.join(os.getcwd(), file_folder, f), outputpath)
+
+
+        print("\nList of randomly sampled files copied to:\n",
+              outputpath)
+
+
+        if saveList == True:
 
             outputfilename = 'sampled_files_list.txt'
 
-            with open(os.path.join(os.getcwd(), outputfilename), 'w') as output:
+            with open(os.path.join(outputpath, outputfilename), 'w') as output:
                 output.write(str(sampled_files))
 
             print("\nList of randomly sampled file names saved to:\n",
-                  os.path.join(os.getcwd(), outputfilename))
+                  os.path.join(outputpath, outputfilename))
 
             print("\nThe following files were sampled:\n",
                   sampled_files)
@@ -85,23 +110,9 @@ def samplefiles(file_folder, file_ext, how_many, save=True):
 
 
 def samplefiles_input():
-    """Function to randomly sample file names with a specified extension from a specified folder.
-    Random sampling is without replacement.
-
-    Function args:
-
-    file_folder:    string specifying the target folder (located in same directory as the .py script)
-
-    file_ext:   string specifying the target file extension.
-                String should contain only the file extension, without the '.' (correct: 'jpg'; incorrect: '.jpg').
-
-    how_many:   integer specifying the number of file names to be sampled.
-                Must be lower or equal to total number of files in target directory.
-
-    save:   takes a boolean value as input.
-            If TRUE, saves a .txt file containing a list of the sampled file names. Also returns list object.
-            If FALSE, only returns the output list object with sampled file names is returned.
-    """
+    """Function to randomly sample file with a specified extension from a specified folder
+     and copy the sampled files to an output folder. Random sampling is without replacement.
+     A list with the file names of the sampled files is saved in a .txt file by default"""
     try:
 
         file_folder = str(input(
@@ -145,22 +156,37 @@ def samplefiles_input():
                                     "Save a file with a list of sampled file names?\nYes: press 'y'\nNo: press 'n'"))
 
         if save_user_input in ['y', 'Y']:
-            save = True
+            saveList = True
         elif save_user_input in ['n', 'N']:
-            save = False
+            saveList = False
 
         # Randomly sample entries from file list without replacement
         sampled_files = random.sample(filelist, int(how_many))
 
-        if save == True:
+        # Move randomly sampled files to output folder
+
+        # Create sub-directory to store output files
+        output_folder_name = 'sampled files'
+        outputpath = os.path.join(os.getcwd(), output_folder_name)
+
+        if not os.path.isdir(outputpath):
+            os.makedirs(outputpath)
+
+        for f in sampled_files:
+            shutil.copy(os.path.join(os.getcwd(), file_folder, f), outputpath)
+
+        print("\nList of randomly sampled files copied to:\n",
+              outputpath)
+
+        if saveList == True:
 
             outputfilename = 'sampled_files_list.txt'
 
-            with open(os.path.join(os.getcwd(), outputfilename), 'w') as output:
+            with open(os.path.join(outputpath, outputfilename), 'w') as output:
                 output.write(str(sampled_files))
 
             print("\nList of randomly sampled file names saved to:\n",
-                  os.path.join(os.getcwd(), outputfilename))
+                  os.path.join(outputpath, outputfilename))
 
             print("\nThe following files were sampled:\n",
                   sampled_files)
