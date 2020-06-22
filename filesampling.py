@@ -1,15 +1,18 @@
 #! /usr/local/bin/python
+import argparse
 import glob
 import os
 import random
 import shutil
-import argparse
+from datetime import datetime
 
 
 def get_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--file_folder', default=None, required=True, type=str,
                         help='String specifying the target folder.')
+    parser.add_argument('--output_folder', default=None, required=True, type=str,
+                        help='String specifying the output folder where the sampled files are copied to.')
     parser.add_argument('--file_ext', default=None, required=True, type=str,
                         help="""String specifying the target file extension.\n
                         String should contain only the file extension, 
@@ -17,6 +20,9 @@ def get_parser():
     parser.add_argument('--how_many', default=None, required=True, type=int,
                         help="""Integer specifying the number of file names to be sampled.\n
                         Must be lower or equal to total number of files in target directory.""")
+    parser.add_argument('--set_seed', default=1234, required=False, type=int,
+                        help="""Integer specifying the pseudo-random number generator.
+                        Allows reproducibility.\nDefault is set to '1234', but seed can be set to any number, not necessarily with four digits.""")
     parser.add_argument('--saveList', default=True, required=False, type=bool,
                         help="""Takes a boolean value as input.\n
                         If TRUE, saves a .txt file containing a list of the sampled file names. Also returns list object.\n
@@ -24,7 +30,7 @@ def get_parser():
     return parser
 
 
-def samplefiles(file_folder, file_ext, how_many, saveList=True):
+def samplefiles(file_folder, output_folder, file_ext, how_many, set_seed=1234, saveList=True):
     """Function to randomly sample file with a specified extension from a specified folder
      and copy the sampled files to an output folder. Random sampling is without replacement.
      A list with the file names of the sampled files is saved in a .txt file by default"""
@@ -56,35 +62,48 @@ def samplefiles(file_folder, file_ext, how_many, saveList=True):
                     file_ext, total_files))
             return None
 
+        # Set seed for random sampling
+        random.seed(int(set_seed))
+
         # Randomly sample entries from file list without replacement
         sampled_files = random.sample(filelist, int(how_many))
 
         # Move randomly sampled files to output folder
 
         # Create sub-directory to store output files
-        output_folder_name = 'sampled files'
+        if output_folder == "":
+            print("Output folder name cannot be an empty string. Using 'output' as output folder name.")
+            output_folder_name ='output'
+        else:
+            output_folder_name = str(output_folder)
+
         outputpath = os.path.join(os.getcwd(), output_folder_name)
 
         if not os.path.isdir(outputpath):
             os.makedirs(outputpath)
 
-
         for f in sampled_files:
             shutil.copy(os.path.join(os.getcwd(), file_folder, f), outputpath)
-
 
         print("\nList of randomly sampled files copied to:\n",
               outputpath)
 
-
         if saveList == True:
 
+            # Create sampled file names list and save it
             outputfilename = 'sampled_files_list.txt'
 
-            with open(os.path.join(outputpath, outputfilename), 'w') as output:
-                output.write(str(sampled_files))
+            # Add timestamp and save it together with sampled file names list
+            samplingtimestamp = datetime.now()
+            samplingtimestamp_str = samplingtimestamp.strftime("%d/%b/%Y (%H:%M:%S)")
+            finaltimestamp = 'Timestamp: ' + samplingtimestamp_str
 
-            print("\nList of randomly sampled file names saved to:\n",
+            timestamp_log = [finaltimestamp, sampled_files]
+
+            with open(os.path.join(outputpath, outputfilename), 'w') as output:
+                output.write(str(timestamp_log))
+
+            print("\nList of randomly sampled file names and sampling timestamp saved to:\n",
                   os.path.join(outputpath, outputfilename))
 
             print("\nThe following files were sampled:\n",
@@ -110,8 +129,9 @@ def samplefiles(file_folder, file_ext, how_many, saveList=True):
 
 
 def samplefiles_input():
-    """Function to randomly sample file with a specified extension from a specified folder
-     and copy the sampled files to an output folder. Random sampling is without replacement.
+    """Randomly samples files with a specified extension from a specified folder
+     and copies the sampled files to an output folder.
+     Function parameters are requested via the terminal interactively. Random sampling is without replacement.
      A list with the file names of the sampled files is saved in a .txt file by default"""
     try:
 
@@ -152,13 +172,28 @@ def samplefiles_input():
                     file_ext, total_files)
             ))
 
-        save_user_input = str(input(""
-                                    "Save a file with a list of sampled file names?\nYes: press 'y'\nNo: press 'n'"))
+        save_user_input = str(input(
+            "Save a file with a list of sampled file names?\nYes: press 'y'\nNo: press 'n'\n"))
 
         if save_user_input in ['y', 'Y']:
             saveList = True
         elif save_user_input in ['n', 'N']:
             saveList = False
+
+        # Set seed for random sampling
+        seed_input = str(input(
+            "Set your own seed number for the random sampling? If No, seed = 1234 will be used by default.\nYes: press 'y'\nNo: press 'n'\n"
+        ))
+
+        if seed_input in ['y', 'Y']:
+            set_seed = input(
+                "Please enter your custom seed number: "
+            )
+        elif seed_input in ['n', 'N']:
+            set_seed = 1234
+
+        # Set seed
+        random.seed(int(set_seed))
 
         # Randomly sample entries from file list without replacement
         sampled_files = random.sample(filelist, int(how_many))
@@ -166,7 +201,17 @@ def samplefiles_input():
         # Move randomly sampled files to output folder
 
         # Create sub-directory to store output files
-        output_folder_name = 'sampled files'
+        output_folder = str(input(
+            "Please enter a name for the output folder where the sampled files will be copied to:"
+        ))
+
+        if output_folder == "":
+            print("Output folder name cannot be an empty string. Using 'output' as output folder name.")
+            output_folder_name = 'output'
+
+        else:
+            output_folder_name = str(output_folder)
+
         outputpath = os.path.join(os.getcwd(), output_folder_name)
 
         if not os.path.isdir(outputpath):
@@ -180,12 +225,20 @@ def samplefiles_input():
 
         if saveList == True:
 
+            # Create sampled file names list and save it
             outputfilename = 'sampled_files_list.txt'
 
-            with open(os.path.join(outputpath, outputfilename), 'w') as output:
-                output.write(str(sampled_files))
+            # Add timestamp and save it together with sampled file names list
+            samplingtimestamp = datetime.now()
+            samplingtimestamp_str = samplingtimestamp.strftime("%d/%b/%Y (%H:%M:%S)")
+            finaltimestamp = 'Timestamp: ' + samplingtimestamp_str
 
-            print("\nList of randomly sampled file names saved to:\n",
+            timestamp_log = [finaltimestamp, sampled_files]
+
+            with open(os.path.join(outputpath, outputfilename), 'w') as output:
+                output.write(str(timestamp_log))
+
+            print("\nList of randomly sampled file names and sampling timestamp saved to:\n",
                   os.path.join(outputpath, outputfilename))
 
             print("\nThe following files were sampled:\n",
