@@ -2,10 +2,15 @@
 
 I wrote this program with the goal of automating the random sampling of face images from databases, mostly to prevent bias in image selection. 
 
-This program randomly samples file names from a folder, based on specified file extension (image extensions: 'png', 'jpg'; but also any other type: 'csv', 'txt', etc.).
-The sampling is without replacement.
+This program randomly samples (without replacement) files of any given extension from a folder. The sampled files are then copied to a new folder together with a .txt file listing the sampled file names.
 
-More updates soon...
+Latest updates:
+- Created Windows executable file to run program interactively via pop-up window.
+- New function samplefiles_input() allows to run the program interactively in the terminal
+
+Coming soon:
+- option to set seed
+- output log file with sampling timestamp
 
 
 Program written by:
