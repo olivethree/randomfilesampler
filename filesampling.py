@@ -66,7 +66,7 @@ def samplefiles(file_folder, output_folder, file_ext, how_many, set_seed=1234, s
         random.seed(int(set_seed))
 
         # Randomly sample entries from file list without replacement
-        sampled_files = random.sample(filelist, int(how_many))
+        sampled_files = random.sample(filelist, how_many)
 
         # Move randomly sampled files to output folder
 
@@ -91,17 +91,22 @@ def samplefiles(file_folder, output_folder, file_ext, how_many, set_seed=1234, s
         if saveList == True:
 
             # Create sampled file names list and save it
-            outputfilename = 'sampled_files_list.txt'
+            outputfilename = 'sampling_info.txt'
 
             # Add timestamp and save it together with sampled file names list
             samplingtimestamp = datetime.now()
             samplingtimestamp_str = samplingtimestamp.strftime("%d/%b/%Y (%H:%M:%S)")
             finaltimestamp = 'Timestamp: ' + samplingtimestamp_str
 
-            timestamp_log = [finaltimestamp, sampled_files]
+            # Add seed number info
+            seed_info = 'Seed number used: ' + str(set_seed)
 
+            # Merge all sampling information in a list
+            sampling_log = [finaltimestamp, seed_info, sampled_files]
+
+            # Save list
             with open(os.path.join(outputpath, outputfilename), 'w') as output:
-                output.write(str(timestamp_log))
+                output.write(str(sampling_log))
 
             print("\nList of randomly sampled file names and sampling timestamp saved to:\n",
                   os.path.join(outputpath, outputfilename))
@@ -196,7 +201,7 @@ def samplefiles_input():
         random.seed(int(set_seed))
 
         # Randomly sample entries from file list without replacement
-        sampled_files = random.sample(filelist, int(how_many))
+        sampled_files = random.sample(filelist, how_many)
 
         # Move randomly sampled files to output folder
 
@@ -226,17 +231,22 @@ def samplefiles_input():
         if saveList == True:
 
             # Create sampled file names list and save it
-            outputfilename = 'sampled_files_list.txt'
+            outputfilename = 'sampling_info.txt'
 
             # Add timestamp and save it together with sampled file names list
             samplingtimestamp = datetime.now()
             samplingtimestamp_str = samplingtimestamp.strftime("%d/%b/%Y (%H:%M:%S)")
             finaltimestamp = 'Timestamp: ' + samplingtimestamp_str
 
-            timestamp_log = [finaltimestamp, sampled_files]
+            # Add seed number info
+            seed_info = 'Seed number used: ' + str(set_seed)
 
+            # Merge all sampling information in a list
+            sampling_log = [finaltimestamp, seed_info, sampled_files]
+
+            # Save list
             with open(os.path.join(outputpath, outputfilename), 'w') as output:
-                output.write(str(timestamp_log))
+                output.write(str(sampling_log))
 
             print("\nList of randomly sampled file names and sampling timestamp saved to:\n",
                   os.path.join(outputpath, outputfilename))
