@@ -6,13 +6,15 @@ This program randomly samples (without replacement) files of any given extension
 
 For reproducibility, the program uses a fixed pseudo-random generator seed number (seed=1234). Alternatively, you can set your own custom seed number.
 
+Lastest news:
+- Created a user-friendly application to use the program, to make it accessible to a wider audience. 
+- To run the application download the "dist" folder and run "filesampler_app.exe"
+
 New features:
 - Timestamp of sampling added to output list of sampled file names
 - Reproducibility: Option to enter custom seed to make sampling process reproducible. Default seed set to 1234.
 - Option to enter a name for the output folder
-
-Work in progress:
-- Add seed number information to output list of sampled file names
+- Seed number information added to output list of sampled file names
 - GUI
 
 
