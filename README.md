@@ -7,7 +7,7 @@ This program randomly samples (without replacement) files of any given extension
 For reproducibility, the program uses a fixed pseudo-random generator seed number (seed=1234). Alternatively, you can set your own custom seed number.
 
 Lastest updates:
-- Created a user-friendly version of the application with a user interface. To start the application download run "filesampler_app.exe" located in the "dist" folder.
+- Created installer for Random File Sampler GUI application (for Windows only).  
 
 New features:
 - Timestamp of sampling added to output list of sampled file names
@@ -15,6 +15,7 @@ New features:
 - Option to enter a name for the output folder
 - Seed number information added to output list of sampled file names
 - GUI
+- Windows installer
 
 
 
