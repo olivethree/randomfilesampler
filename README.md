@@ -17,4 +17,6 @@ New features:
 - GUI
 
 
- - Manuel Oliveira
+
+Manuel Oliveira
+(manueljbo@gmail.com)
