@@ -1,5 +1,6 @@
 /RandomFileSamplerApp/
 /Random File Sampler Installer/
+/src/dice-icon.ico
 filesampler_app.spec
 GNU AGPLv3-license.txt
 inno_installer_script.iss
