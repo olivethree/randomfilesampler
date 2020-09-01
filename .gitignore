@@ -6,3 +6,4 @@
 filesampler_app.spec
 GNU AGPLv3-license.txt
 inno_installer_script.iss
+inno_installer_script_with_iconfilename.iss
