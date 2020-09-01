@@ -1,5 +1,5 @@
 ('C:\\Users\\manue\\PycharmProjects\\randomfilesampling\\src\\build\\filesampler_app\\filesampler_app.exe',
- True,
+ False,
  False,
  True,
  None,
@@ -39,7 +39,7 @@
  [],
  False,
  False,
- 1598781148,
- [('run.exe',
-   'C:\\Users\\manue\\Anaconda3\\envs\\randomfilesampling_py37\\lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit\\run.exe',
+ 1598953013,
+ [('runw.exe',
+   'C:\\Users\\manue\\Anaconda3\\envs\\randomfilesampling_py37\\lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit\\runw.exe',
    'EXECUTABLE')])

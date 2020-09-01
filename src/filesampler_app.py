@@ -130,8 +130,8 @@ def filesampler():
     # Finished message box
     messagebox.showinfo("Done",
                         f"Files sampling complete!\n\nList of randomly sampled files copied to:\n\n{outputpath}\n\n"
-                        f"Application by Manuel Oliveira\n"
-                        f"(manueljbo@gmail.com)")
+                        f"Thank you for using Random File Sampler!\n"
+                        f"- Manuel Oliveira -")
 
     openpath = os.path.realpath(os.path.join(file_folder, output_folder_name))
     os.startfile(openpath)
@@ -163,12 +163,12 @@ def showHelp():
 # Define function to show App info on menu
 def showAbout():
     messagebox.showinfo("Application Information", "\nRandom File Sampler\n\n"
-                                                   "Version 0.1\n\n"
-                                                   "Application written in Python 3.7 by:\n\n"
+                                                   "Version 1.0\n\n"
+                                                   "Written in Python 3.7 by:\n\n"
                                                    "Manuel J. Barbosa de Oliveira\n\n"
                                                    "Github: olivethree\n\n"
                                                    "Created on June 2020\n"
-                                                   "Last update: 23/06/2020")
+                                                   "Last update: 01/09/2020")
 
 
 # Add menu and About information
